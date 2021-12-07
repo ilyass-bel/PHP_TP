@@ -5,6 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
+
+#[ApiFilter(SearchFilter::class, properties: ['nbPages' => 'exact', 'Title' => 'partial'] )]
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
