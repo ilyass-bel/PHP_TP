@@ -9,14 +9,21 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiFilter(SearchFilter::class, properties: ['nbPages' => 'exact', 'Title' => 'partial'] )]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 
+
+
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
     itemOperations: ['get', 'put' , 'delete'],
+
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+
 )]
 class Book
 {
@@ -25,18 +32,23 @@ class Book
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups("write")]
     #[ORM\Column(type: 'string', length: 100)]
     private $title;
 
+    #[Groups(["read", "write"])]
     #[ORM\Column(type: 'string', length: 50)]
     private $author;
 
+    #[Groups(["read", "write"])]
     #[ORM\Column(type: 'integer')]
     private $nbPages;
 
+    #[Groups(["read", "write"])]
     #[ORM\Column(type: 'float')]
     private $price;
 
+    #[Groups(["read", "write"])]
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
