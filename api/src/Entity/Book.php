@@ -19,7 +19,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
-    itemOperations: ['get', 'put' , 'delete'],
+    itemOperations: ['get', 'put' , 'delete',
+
+    'post_publication' => [
+        'method' => 'POST',
+        'path' => '/books/{id}/publication',
+        'controller' => CreateBookPublication::class,
+    ]
+],
+
+    
 
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
